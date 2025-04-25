@@ -34,6 +34,9 @@ public class HabitRepository : IHabitRepository
     return Task.CompletedTask;
   }
 
+  public async Task AddLogAsync(HabitLog log) =>
+    await _ctx.HabitLogs.AddAsync(log);
+
   public async Task SaveChangesAsync() =>
     await _ctx.SaveChangesAsync();
 }
