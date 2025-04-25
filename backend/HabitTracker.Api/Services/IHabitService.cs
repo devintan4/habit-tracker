@@ -12,4 +12,5 @@ public interface IHabitService
   Task<HabitDto> CreateAsync(CreateHabitDto dto);
   Task<bool> UpdateAsync(Guid id, CreateHabitDto dto);
   Task<bool> DeleteAsync(Guid id);
+  Task<HabitDto?> AddLogAsync(Guid id);
 }
