@@ -1,20 +1,26 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { buttonVariants } from "./ui/button";
 
 export default function Navbar() {
-  const linkClass = ({ isActive }: { isActive: boolean }) =>
-    isActive
-      ? "text-primary font-semibold"
-      : "text-gray-600 hover:text-primary";
-
+  const loc = useLocation().pathname;
   return (
-    <nav className="bg-white shadow px-4 py-3 flex space-x-4">
-      <NavLink to="/habits" className={linkClass}>
+    <nav className="bg-white shadow px-6 py-4 flex space-x-4">
+      <Link
+        to="/habits"
+        className={buttonVariants({
+          variant: loc.startsWith("/habits") ? "default" : "ghost",
+        })}
+      >
         Habits
-      </NavLink>
-      <NavLink to="/stats" className={linkClass}>
+      </Link>
+      <Link
+        to="/stats"
+        className={buttonVariants({
+          variant: loc === "/stats" ? "default" : "ghost",
+        })}
+      >
         Stats
-      </NavLink>
+      </Link>
     </nav>
   );
 }

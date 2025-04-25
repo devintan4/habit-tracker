@@ -38,4 +38,13 @@ public class HabitsController : ControllerBase
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(Guid id) =>
     await _svc.DeleteAsync(id) ? NoContent() : NotFound();
+
+  [HttpPost("{id}/logs")]
+  public async Task<IActionResult> Log(Guid id)
+  {
+    var dto = await _svc.AddLogAsync(id);
+    return dto == null
+      ? NotFound()
+      : Ok(dto);
+  }
 }

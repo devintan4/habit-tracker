@@ -157,3 +157,4 @@ C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\
 C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\HabitTracker.Api\obj\Debug\net8.0\HabitTracker.Api.pdb
 C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\HabitTracker.Api\obj\Debug\net8.0\HabitTracker.Api.genruntimeconfig.cache
 C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\HabitTracker.Api\obj\Debug\net8.0\ref\HabitTracker.Api.dll
+C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\HabitTracker.api\obj\Debug\net8.0\HabitTracker.Api.sourcelink.json
