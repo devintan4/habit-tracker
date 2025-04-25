@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useHabitStore } from "../store/useHabitStore";
-import Loading from "../components/Loadint";
+import Loading from "../components/Loading";
 
 export default function StatsPage() {
   const { habits, loading, fetchAll } = useHabitStore();
