@@ -1,17 +1,22 @@
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using HabitTracker.Api.DTOs;
 using HabitTracker.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HabitTracker.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class HabitsController : ControllerBase
 {
   private readonly IHabitService _svc;
   public HabitsController(IHabitService svc) => _svc = svc;
+
+  private Guid GetUserId() => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
   [HttpGet]
   public async Task<IActionResult> GetAll() =>
@@ -38,4 +43,13 @@ public class HabitsController : ControllerBase
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(Guid id) =>
     await _svc.DeleteAsync(id) ? NoContent() : NotFound();
+
+  [HttpPost("{id}/logs")]
+  public async Task<IActionResult> Log(Guid id)
+  {
+    var dto = await _svc.AddLogAsync(id);
+    return dto == null
+      ? NotFound()
+      : Ok(dto);
+  }
 }
