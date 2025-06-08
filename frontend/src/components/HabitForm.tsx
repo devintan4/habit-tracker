@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 import { CreateHabitDto } from "../types/habit";
 
 interface Props {
@@ -12,13 +13,35 @@ export default function HabitForm({
   onSubmit,
   submitLabel = "Save",
 }: Props) {
-  const [form, setForm] = useState(initial);
+  const [form, setForm] = useState<CreateHabitDto>(initial);
   const [saving, setSaving] = useState(false);
 
-  const handle = (e: React.FormEvent) => {
+  const handle = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    onSubmit(form).finally(() => setSaving(false));
+    try {
+      await onSubmit(form);
+      await Swal.fire({
+        icon: "success",
+        title: "Habit Added!",
+        text: `“${form.name}” has been added successfully.`,
+        confirmButtonText: "OK",
+      });
+      // reset form
+      setForm(initial);
+    } catch (err: any) {
+      await Swal.fire({
+        icon: "error",
+        title: "Failed to Add Habit",
+        text:
+          err?.response?.data ||
+          err?.message ||
+          "Something went wrong while adding the habit.",
+        confirmButtonText: "OK",
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -115,7 +138,7 @@ export default function HabitForm({
             hover:bg-primary-dark
             focus:outline-none focus:ring-2 focus:ring-primary
             transition
-            disabled:opacity-50 disabled:cursor-not-allowed
+            disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer
           "
         >
           {saving && (
