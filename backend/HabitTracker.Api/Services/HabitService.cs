@@ -74,10 +74,16 @@ public class HabitService : IHabitService
     DateTime? prev = null;
     foreach (var d in dates)
     {
-      current = (prev.HasValue && (d - prev.Value).Days == 1) ? current + 1 : 1;
+      current = (prev.HasValue && (d - prev.Value).Days == 1)
+          ? current + 1
+          : 1;
       if (current > longest) longest = current;
       prev = d;
     }
+
+    // tentukan apakah sudah ada log untuk hari ini
+    var today = DateTime.UtcNow.Date;
+    bool isDoneToday = dates.Contains(today);
 
     return new HabitDto
     {
@@ -111,7 +117,7 @@ public class HabitService : IHabitService
       await _repo.SaveChangesAsync();
     }
 
-    // reload habit & logs untuk hitung streak
+    // reload habit & logs untuk hitung ulang streak
     var updated = await _repo.GetByIdAsync(id);
     return updated is null ? null : MapToDto(updated);
   }

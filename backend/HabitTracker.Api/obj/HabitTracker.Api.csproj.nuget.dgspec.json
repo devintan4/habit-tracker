@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\vnine\\Downloads\\Pradita University\\Semester 4\\Rekayasa Perangkat Lunak\\habit-tracker\\backend\\HabitTracker.api\\HabitTracker.Api.csproj": {}
+    "C:\\Users\\vnine\\Downloads\\Pradita University\\Semester 4\\Rekayasa Perangkat Lunak\\habit-tracker\\backend\\HabitTracker.Api\\HabitTracker.Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\vnine\\Downloads\\Pradita University\\Semester 4\\Rekayasa Perangkat Lunak\\habit-tracker\\backend\\HabitTracker.api\\HabitTracker.Api.csproj": {
+    "C:\\Users\\vnine\\Downloads\\Pradita University\\Semester 4\\Rekayasa Perangkat Lunak\\habit-tracker\\backend\\HabitTracker.Api\\HabitTracker.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\vnine\\Downloads\\Pradita University\\Semester 4\\Rekayasa Perangkat Lunak\\habit-tracker\\backend\\HabitTracker.api\\HabitTracker.Api.csproj",
+        "projectUniqueName": "C:\\Users\\vnine\\Downloads\\Pradita University\\Semester 4\\Rekayasa Perangkat Lunak\\habit-tracker\\backend\\HabitTracker.Api\\HabitTracker.Api.csproj",
         "projectName": "HabitTracker.Api",
-        "projectPath": "C:\\Users\\vnine\\Downloads\\Pradita University\\Semester 4\\Rekayasa Perangkat Lunak\\habit-tracker\\backend\\HabitTracker.api\\HabitTracker.Api.csproj",
+        "projectPath": "C:\\Users\\vnine\\Downloads\\Pradita University\\Semester 4\\Rekayasa Perangkat Lunak\\habit-tracker\\backend\\HabitTracker.Api\\HabitTracker.Api.csproj",
         "packagesPath": "C:\\Users\\vnine\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\vnine\\Downloads\\Pradita University\\Semester 4\\Rekayasa Perangkat Lunak\\habit-tracker\\backend\\HabitTracker.api\\obj\\",
+        "outputPath": "C:\\Users\\vnine\\Downloads\\Pradita University\\Semester 4\\Rekayasa Perangkat Lunak\\habit-tracker\\backend\\HabitTracker.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\vnine\\AppData\\Roaming\\NuGet\\NuGet.Config"
