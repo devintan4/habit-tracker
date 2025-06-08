@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),   // ini kunci supaya “@/components” dikenali
+      "@": path.resolve(__dirname, "src"),
     },
   },
   server: {

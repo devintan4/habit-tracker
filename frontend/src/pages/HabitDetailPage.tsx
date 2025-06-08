@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { useHabitStore } from "../store/useHabitStore";
 import HabitForm from "../components/HabitForm";
 import { HabitDto, UpdateHabitDto } from "../types/habit";
@@ -7,49 +8,67 @@ import Loading from "../components/Loading";
 
 export default function HabitDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const { fetchOne, update, remove, markDone } = useHabitStore();
 
   const [habit, setHabit] = useState<HabitDto>();
   const [loading, setLoading] = useState(true);
   const [doneDisabled, setDoneDisabled] = useState(false);
 
-  useEffect(() => {
+  // load habit & update disabled state
+  const loadHabit = async () => {
     if (!id) return;
-    fetchOne(id)
-      .then((h) => {
-        setHabit(h);
-        // Disable if already marked today
-        if (h && h.currentStreak > 0) {
-          const lastLogDate = new Date(); // frontend can't see logs—assume done if just reloaded
-          setDoneDisabled(true);
-        }
-      })
-      .finally(() => setLoading(false));
+    setLoading(true);
+    const h = await fetchOne(id);
+    setHabit(h);
+    if (h) {
+      const doneCount = h.completedCountToday ?? 0;
+      setDoneDisabled(doneCount >= h.frequency);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadHabit();
   }, [id]);
 
   if (!id || loading) return <Loading />;
   if (!habit) return <p>Habit not found</p>;
 
+  // fallback completedCountToday ke 0 jika undefined
+  const completedToday = habit.completedCountToday ?? 0;
+
   const handleDone = async () => {
     setDoneDisabled(true);
     await markDone(id);
-    // reload detail
-    setLoading(true);
-    const h2 = await fetchOne(id);
-    setHabit(h2);
-    setLoading(false);
+    await loadHabit();
   };
 
-  const handleUpdate = async (h: UpdateHabitDto) => {
-    await update(id, h);
-    nav("/habits");
+  const handleUpdate = async (data: UpdateHabitDto) => {
+    await update(id, data);
+    navigate("/habits");
   };
 
   const handleDelete = async () => {
-    if (confirm("Delete this habit?")) {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This habit will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
       await remove(id);
-      nav("/habits");
+      await Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Your habit has been deleted.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      navigate("/habits");
     }
   };
 
@@ -66,18 +85,25 @@ export default function HabitDetailPage() {
             onClick={handleDone}
             disabled={doneDisabled}
             className="
-            w-full py-3 rounded-md text-white font-semibold
-            bg-indigo-600 hover:bg-indigo-700
-            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-            transition
-            disabled:bg-indigo-300 disabled:hover:bg-indigo-300 disabled:cursor-not-allowed
-          "
+              w-full py-3 rounded-md text-white font-semibold
+              bg-indigo-600 hover:bg-indigo-700
+              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+              transition
+              disabled:bg-indigo-300 disabled:hover:bg-indigo-300 disabled:cursor-not-allowed
+            "
           >
-            {doneDisabled ? "Done Today ✅" : "Mark Done Today"}
+            {doneDisabled
+              ? `Done Today ✅ (${completedToday}/${habit.frequency})`
+              : `Mark Done Today (${completedToday}/${habit.frequency})`}
           </button>
 
-          <div className="mt-6 text-gray-700">
-            <p className="mb-1">
+          <div className="mt-6 text-gray-700 space-y-1">
+            <p>
+              Progress Today:{" "}
+              <span className="font-semibold">{completedToday}</span> /{" "}
+              <span className="font-semibold">{habit.frequency}</span>
+            </p>
+            <p>
               Current Streak:{" "}
               <span className="font-semibold">{habit.currentStreak}</span>
             </p>
@@ -108,7 +134,7 @@ export default function HabitDetailPage() {
         <div className="text-center">
           <button
             onClick={handleDelete}
-            className="text-red-600 hover:underline"
+            className="text-red-600 hover:underline cursor-pointer"
           >
             Delete Habit
           </button>

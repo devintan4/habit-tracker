@@ -19,37 +19,42 @@ public class HabitsController : ControllerBase
   private Guid GetUserId() => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
   [HttpGet]
-  public async Task<IActionResult> GetAll() =>
-    Ok(await _svc.GetAllAsync());
+  public async Task<IActionResult> GetAll()
+  {
+    var userId = GetUserId();
+    return Ok(await _svc.GetAllAsync(userId));
+  }
 
   [HttpGet("{id}")]
   public async Task<IActionResult> Get(Guid id)
   {
-    var dto = await _svc.GetByIdAsync(id);
+    var userId = GetUserId();
+    var dto = await _svc.GetByIdAsync(userId, id);
     return dto is null ? NotFound() : Ok(dto);
   }
 
   [HttpPost]
   public async Task<IActionResult> Create(CreateHabitDto dto)
   {
-    var created = await _svc.CreateAsync(dto);
+    var userId = GetUserId();
+    var created = await _svc.CreateAsync(userId, dto);
     return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
   }
 
   [HttpPut("{id}")]
   public async Task<IActionResult> Update(Guid id, CreateHabitDto dto) =>
-    await _svc.UpdateAsync(id, dto) ? NoContent() : NotFound();
+    await _svc.UpdateAsync(GetUserId(), id, dto)
+      ? NoContent() : NotFound();
 
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(Guid id) =>
-    await _svc.DeleteAsync(id) ? NoContent() : NotFound();
+    await _svc.DeleteAsync(GetUserId(), id)
+      ? NoContent() : NotFound();
 
   [HttpPost("{id}/logs")]
   public async Task<IActionResult> Log(Guid id)
   {
-    var dto = await _svc.AddLogAsync(id);
-    return dto == null
-      ? NotFound()
-      : Ok(dto);
+    var dto = await _svc.AddLogAsync(GetUserId(), id);
+    return dto is null ? NotFound() : Ok(dto);
   }
 }
