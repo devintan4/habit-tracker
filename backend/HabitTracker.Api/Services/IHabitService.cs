@@ -7,10 +7,10 @@ namespace HabitTracker.Api.Services;
 
 public interface IHabitService
 {
-  Task<IEnumerable<HabitDto>> GetAllAsync();
-  Task<HabitDto?> GetByIdAsync(Guid id);
-  Task<HabitDto> CreateAsync(CreateHabitDto dto);
-  Task<bool> UpdateAsync(Guid id, CreateHabitDto dto);
-  Task<bool> DeleteAsync(Guid id);
-  Task<HabitDto?> AddLogAsync(Guid id);
+  Task<IEnumerable<HabitDto>> GetAllAsync(Guid userId);
+  Task<HabitDto?> GetByIdAsync(Guid userId, Guid id);
+  Task<HabitDto> CreateAsync(Guid userId, CreateHabitDto dto);
+  Task<bool> UpdateAsync(Guid userId, Guid id, CreateHabitDto dto);
+  Task<bool> DeleteAsync(Guid userId, Guid id);
+  Task<HabitDto?> AddLogAsync(Guid userId, Guid id);
 }

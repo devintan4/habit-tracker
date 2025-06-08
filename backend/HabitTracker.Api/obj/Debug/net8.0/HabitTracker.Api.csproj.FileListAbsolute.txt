@@ -158,3 +158,11 @@ C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\
 C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\HabitTracker.Api\obj\Debug\net8.0\HabitTracker.Api.genruntimeconfig.cache
 C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\HabitTracker.Api\obj\Debug\net8.0\ref\HabitTracker.Api.dll
 C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\HabitTracker.api\obj\Debug\net8.0\HabitTracker.Api.sourcelink.json
+C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\habittracker.api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\habittracker.api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\habittracker.api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\habittracker.api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\habittracker.api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\habittracker.api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\habittracker.api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\vnine\Downloads\Pradita University\Semester 4\Rekayasa Perangkat Lunak\habit-tracker\backend\habittracker.api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll

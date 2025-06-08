@@ -33,7 +33,12 @@ namespace HabitTracker.Api.Migrations
                     b.Property<bool>("ReminderOn")
                         .HasColumnType("INTEGER");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Habits");
                 });
@@ -60,6 +65,43 @@ namespace HabitTracker.Api.Migrations
                     b.ToTable("HabitLogs");
                 });
 
+            modelBuilder.Entity("HabitTracker.Api.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("HabitTracker.Api.Models.Habit", b =>
+                {
+                    b.HasOne("HabitTracker.Api.Models.User", "User")
+                        .WithMany("Habits")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("HabitTracker.Api.Models.HabitLog", b =>
                 {
                     b.HasOne("HabitTracker.Api.Models.Habit", "Habit")
@@ -74,6 +116,11 @@ namespace HabitTracker.Api.Migrations
             modelBuilder.Entity("HabitTracker.Api.Models.Habit", b =>
                 {
                     b.Navigation("Logs");
+                });
+
+            modelBuilder.Entity("HabitTracker.Api.Models.User", b =>
+                {
+                    b.Navigation("Habits");
                 });
 #pragma warning restore 612, 618
         }
