@@ -13,35 +13,36 @@ public class HabitService : IHabitService
   private readonly IHabitRepository _repo;
   public HabitService(IHabitRepository repo) => _repo = repo;
 
-  public async Task<IEnumerable<HabitDto>> GetAllAsync()
+  public async Task<IEnumerable<HabitDto>> GetAllAsync(Guid userId)
   {
-    var habits = await _repo.GetAllAsync();
+    var habits = await _repo.GetAllAsync(userId);
     return habits.Select(MapToDto);
   }
 
-  public async Task<HabitDto?> GetByIdAsync(Guid id)
+  public async Task<HabitDto?> GetByIdAsync(Guid userId, Guid id)
   {
-    var h = await _repo.GetByIdAsync(id);
+    var h = await _repo.GetByIdAsync(userId, id);
     return h is null ? null : MapToDto(h);
   }
 
-  public async Task<HabitDto> CreateAsync(CreateHabitDto dto)
+  public async Task<HabitDto> CreateAsync(Guid userId, CreateHabitDto dto)
   {
     var h = new Habit
     {
       Id = Guid.NewGuid(),
       Name = dto.Name,
       Frequency = dto.Frequency,
-      ReminderOn = dto.ReminderOn
+      ReminderOn = dto.ReminderOn,
+      UserId = userId         // ← penting
     };
     await _repo.AddAsync(h);
     await _repo.SaveChangesAsync();
     return MapToDto(h);
   }
 
-  public async Task<bool> UpdateAsync(Guid id, CreateHabitDto dto)
+  public async Task<bool> UpdateAsync(Guid userId, Guid id, CreateHabitDto dto)
   {
-    var h = await _repo.GetByIdAsync(id);
+    var h = await _repo.GetByIdAsync(userId, id);
     if (h is null) return false;
     h.Name = dto.Name;
     h.Frequency = dto.Frequency;
@@ -51,33 +52,72 @@ public class HabitService : IHabitService
     return true;
   }
 
-  public async Task<bool> DeleteAsync(Guid id)
+  public async Task<bool> DeleteAsync(Guid userId, Guid id)
   {
-    var h = await _repo.GetByIdAsync(id);
+    var h = await _repo.GetByIdAsync(userId, id);
     if (h is null) return false;
     await _repo.DeleteAsync(h);
     await _repo.SaveChangesAsync();
     return true;
   }
 
+  public async Task<HabitDto?> AddLogAsync(Guid userId, Guid id)
+  {
+    var habit = await _repo.GetByIdAsync(userId, id);
+    if (habit == null) return null;
+
+    var today = DateTime.UtcNow.Date;
+    var todayCount = habit.Logs.Count(l => l.Date.Date == today && l.Completed);
+    if (todayCount < habit.Frequency)
+    {
+      var log = new HabitLog
+      {
+        Id = Guid.NewGuid(),
+        HabitId = id,
+        Date = DateTime.UtcNow,
+        Completed = true
+      };
+      await _repo.AddLogAsync(log);
+      await _repo.SaveChangesAsync();
+    }
+
+    var updated = await _repo.GetByIdAsync(userId, id);
+    return updated is null ? null : MapToDto(updated);
+  }
+
   private static HabitDto MapToDto(Habit h)
   {
-    // hitung streak sederhana
-    var dates = h.Logs
-        .Where(l => l.Completed)
-        .Select(l => l.Date.Date)
-        .Distinct()
-        .OrderBy(d => d)
-        .ToList();
+    var byDay = h.Logs
+      .Where(l => l.Completed)
+      .GroupBy(l => l.Date.Date)
+      .Select(g => new { Date = g.Key, Count = g.Count() })
+      .OrderBy(x => x.Date)
+      .ToList();
 
     int longest = 0, current = 0;
     DateTime? prev = null;
-    foreach (var d in dates)
+    foreach (var x in byDay)
     {
-      current = (prev.HasValue && (d - prev.Value).Days == 1) ? current + 1 : 1;
-      if (current > longest) longest = current;
-      prev = d;
+      if (x.Count >= h.Frequency &&
+          (prev.HasValue && (x.Date - prev.Value).Days == 1))
+      {
+        current++;
+      }
+      else if (x.Count >= h.Frequency)
+      {
+        current = 1;
+      }
+      else
+      {
+        current = 0;
+      }
+      longest = Math.Max(longest, current);
+      prev = x.Date;
     }
+
+    var today = DateTime.UtcNow.Date;
+    var todayCount = byDay.FirstOrDefault(x => x.Date == today)?.Count ?? 0;
+    bool done = todayCount >= h.Frequency;
 
     return new HabitDto
     {
@@ -86,7 +126,9 @@ public class HabitService : IHabitService
       Frequency = h.Frequency,
       ReminderOn = h.ReminderOn,
       CurrentStreak = current,
-      LongestStreak = longest
+      LongestStreak = longest,
+      CompletedCountToday = todayCount,
+      IsDoneToday = done
     };
   }
 }

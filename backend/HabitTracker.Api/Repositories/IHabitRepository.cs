@@ -7,10 +7,11 @@ namespace HabitTracker.Api.Repositories;
 
 public interface IHabitRepository
 {
-  Task<IEnumerable<Habit>> GetAllAsync();
-  Task<Habit?> GetByIdAsync(Guid id);
+  Task<IEnumerable<Habit>> GetAllAsync(Guid userId);
+  Task<Habit?> GetByIdAsync(Guid userId, Guid id);
   Task AddAsync(Habit habit);
   Task UpdateAsync(Habit habit);
   Task DeleteAsync(Habit habit);
+  Task AddLogAsync(HabitLog log);
   Task SaveChangesAsync();
 }

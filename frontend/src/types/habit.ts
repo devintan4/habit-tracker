@@ -5,6 +5,8 @@ export interface HabitDto {
   reminderOn: boolean;
   currentStreak: number;
   longestStreak: number;
+  completedCountToday: number;
+  isDoneToday: boolean;
 }
 
 export interface CreateHabitDto {

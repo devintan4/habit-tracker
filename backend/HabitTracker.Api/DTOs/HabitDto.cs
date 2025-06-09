@@ -10,4 +10,6 @@ public class HabitDto
   public bool ReminderOn { get; set; }
   public int CurrentStreak { get; set; }
   public int LongestStreak { get; set; }
+  public int CompletedCountToday { get; set; }
+  public bool IsDoneToday { get; set; }
 }
