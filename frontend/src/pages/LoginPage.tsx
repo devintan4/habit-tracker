@@ -40,7 +40,7 @@ export default function LoginPage() {
           required
           className="w-full border px-3 py-2 rounded"
         />
-        <button className="w-full bg-primary text-white py-2 rounded">
+        <button className="w-full bg-primary text-white py-2 rounded cursor-pointer">
           Login
         </button>
       </form>
