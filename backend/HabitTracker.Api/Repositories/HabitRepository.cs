@@ -14,8 +14,7 @@ public class HabitRepository : IHabitRepository
   public HabitRepository(AppDbContext ctx) => _ctx = ctx;
 
   public async Task<IEnumerable<Habit>> GetAllAsync(Guid userId) =>
-    await _ctx.Habits
-      .Where(h => h.UserId == userId)
+    await _ctx.Habits.Where(h => h.UserId == userId)
       .Include(h => h.Logs)
       .ToListAsync();
 
