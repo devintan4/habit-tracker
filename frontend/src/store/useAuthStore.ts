@@ -11,7 +11,6 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set, get) => {
-  // baca saved token & username dari localStorage
   const savedToken = localStorage.getItem("token");
   const savedUsername = localStorage.getItem("username");
 
